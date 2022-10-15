@@ -52,8 +52,8 @@ public class Pool {
 
         //Step 2 - Calculating the amount of liner needed to create the pool (surface area)
 
-        double surfaceArea1 = length * shallowHeight * 2;
-        double surfaceArea2 = (length - shallowLength - transitionLength) * (deepHeight - shallowHeight) * 2;
+        double surfaceArea1 = (length * shallowHeight) * 2;
+        double surfaceArea2 = ((length - shallowLength - transitionLength) * (deepHeight - shallowHeight)) * 2;
         double surfaceArea3 = transitionLength * (deepHeight - shallowHeight);
         double surfaceArea4 = width * deepHeight;
         double surfaceArea5 = width * shallowHeight;
