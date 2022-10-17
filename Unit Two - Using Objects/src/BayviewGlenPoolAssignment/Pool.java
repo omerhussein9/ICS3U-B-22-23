@@ -8,35 +8,26 @@ public class Pool {
 
         //initializing all of the needed variables
 
-        // System.out.println("Please enter the length of the pool in metres: ");
-        // double length = in.nextDouble();
+        System.out.println("Please enter the length of the pool in metres: ");
+        double length = in.nextDouble();
 
-        // System.out.println("Please enter the length of the shallow end in metres: ");
-        // double shallowLength = in.nextDouble();
+        System.out.println("Please enter the length of the shallow end in metres: ");
+        double shallowLength = in.nextDouble();
 
-        // System.out.println("Please enter the length of the transition area in metres: ");
-        // double transition = in.nextDouble();
+        System.out.println("Please enter the length of the transition area in metres: ");
+        double transition = in.nextDouble();
 
-        // System.out.println("Please enter the depth of the shallow end in metres: ");
-        // double shallowHeight = in.nextDouble();
+        System.out.println("Please enter the depth of the shallow end in metres: ");
+        double shallowHeight = in.nextDouble();
 
-        // System.out.println("Please enter the depth of the deep end in metres: ");
-        // double deepHeight = in.nextDouble();
+        System.out.println("Please enter the depth of the deep end in metres: ");
+        double deepHeight = in.nextDouble();
 
-        // System.out.println("Please enter the width of the pool in metres: ");
-        // double width = in.nextDouble();
+        System.out.println("Please enter the width of the pool in metres: ");
+        double width = in.nextDouble();
 
-        // System.out.println("Please enter the price of the liner per metre squared: ");
-        // double linerCost = in.nextDouble();
-
-        double length = 20;
-        double shallowLength = 5;
-        double transition = 7;
-        double shallowHeight = 3;
-        double deepHeight = 8;
-        double width = 8;
-
-        double linerCost = 2;
+        System.out.println("Please enter the price of the liner per metre squared: ");
+        double linerCost = in.nextDouble();
 
         //Step 1 - Calculating the volume of the pool
 
@@ -67,8 +58,8 @@ public class Pool {
 
         //Step 3 - Calculating the cost of the liner
 
-        double rawPrice = poolSurfaceArea * linerCost;
-        String roundedPrice = String.valueOf(rawPrice).substring(0,7);
+        String rawPrice = String.valueOf(poolSurfaceArea * linerCost);
+        String roundedPrice = rawPrice.substring(0,rawPrice.indexOf('.') + 3);
 
         System.out.println("To cover this pool's surface area, $" + roundedPrice + " of liner is needed.");
         
