@@ -33,9 +33,9 @@ public class Pool {
 
         double transitionLength = Math.sqrt(Math.pow(transition,2) - Math.pow(deepHeight - shallowHeight,2));
 
-        double volume1 = length * width * shallowHeight;
-        double volume2 = (length - shallowLength - transitionLength) * width * (deepHeight - shallowHeight);
-        double volume3 = (transitionLength * width * (deepHeight - shallowHeight))/2;
+        double volume1 = length * width * shallowHeight; //first rectangular prism volume
+        double volume2 = (length - shallowLength - transitionLength) * width * (deepHeight - shallowHeight); //second rectangular prism volume
+        double volume3 = (transitionLength * width * (deepHeight - shallowHeight))/2; //third rectangular prism volume
 
         double poolVolume = volume1 + volume2 + volume3;
 
@@ -43,16 +43,9 @@ public class Pool {
 
         //Step 2 - Calculating the amount of liner needed to create the pool (surface area)
 
-        double surfaceArea1 = (length * shallowHeight) * 2;
-        double surfaceArea2 = ((length - shallowLength - transitionLength) * (deepHeight - shallowHeight)) * 2;
-        double surfaceArea3 = transitionLength * (deepHeight - shallowHeight);
-        double surfaceArea4 = width * deepHeight;
-        double surfaceArea5 = width * shallowHeight;
-        double surfaceArea6 = (length - shallowLength - transitionLength) * width;
-        double surfaceArea7 = shallowLength * width;
-        double surfaceArea8 = transition * width;
-
-        double poolSurfaceArea = surfaceArea1 + surfaceArea2 + surfaceArea3 + surfaceArea4 + surfaceArea5 + surfaceArea6 + surfaceArea7 + surfaceArea8;
+        double poolSurfaceArea = (2 * ((length * shallowHeight) + (length - shallowLength - transitionLength) * (deepHeight - shallowHeight))) +
+        (transitionLength * (deepHeight - shallowHeight)) + (width * deepHeight) + (width * shallowHeight) + ((length - shallowLength - transitionLength) * width) +
+        (shallowLength * width) + (transition * width);
         
         System.out.println("You will need " + poolSurfaceArea + " metres squared of liner to cover this pool.");
 
