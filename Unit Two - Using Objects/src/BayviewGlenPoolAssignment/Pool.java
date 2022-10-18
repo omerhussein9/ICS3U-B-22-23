@@ -33,9 +33,9 @@ public class Pool {
 
         double transitionLength = Math.sqrt(Math.pow(transition,2) - Math.pow(deepHeight - shallowHeight,2));
 
-        double volume1 = length * width * shallowHeight; //first rectangular prism volume
-        double volume2 = (length - shallowLength - transitionLength) * width * (deepHeight - shallowHeight); //second rectangular prism volume
-        double volume3 = (transitionLength * width * (deepHeight - shallowHeight))/2; //third rectangular prism volume
+        double volume1 = length * width * shallowHeight;
+        double volume2 = (length - shallowLength - transitionLength) * width * (deepHeight - shallowHeight);
+        double volume3 = (transitionLength * width * (deepHeight - shallowHeight))/2;
 
         double poolVolume = volume1 + volume2 + volume3;
 
