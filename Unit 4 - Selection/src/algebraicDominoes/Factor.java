@@ -20,7 +20,8 @@ public class Factor {
      * Fix division on exponents only using the last digit
      */
     public static String diffSquare(String exp) {
-        exp = remSpaces(exp);
+        // exp = remSpaces(exp);
+        exp.strip();
         if(exp.indexOf("-")>0) {
             for(String op : operators) {
                 if(exp.substring(exp.indexOf("-")).indexOf(op)>0)
@@ -61,15 +62,15 @@ public class Factor {
 
     private static String[] operators = {"-","+"}; //expandable
 
-    private static String remSpaces(String exp) {
-        String out = new String();
-        for(int i = 0; i<exp.length(); i++) {
-            if(exp.substring(i,i+1).equals(" "))
-                continue;
-            out += exp.charAt(i);
-        }
-        return out;
-    }
+    // private static String remSpaces(String exp) {
+    //     String out = new String();
+    //     for(int i = 0; i<exp.length(); i++) {
+    //         if(exp.substring(i,i+1).equals(" "))
+    //             continue;
+    //         out += exp.charAt(i);
+    //     }
+    //     return out;
+    // }
 
     private static String remFloat(double num) {
         String exp = num + "";
