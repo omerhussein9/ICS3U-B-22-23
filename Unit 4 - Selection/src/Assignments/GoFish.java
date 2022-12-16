@@ -45,6 +45,7 @@ public class GoFish {
 
             if(action == REQUEST_CARDS) {
                 String cardRequested = requestCards();
+                System.out.println(cardRequested);
                 break;
             } else if(action == CHECK_HAND)
                 displayHand(p);
@@ -58,8 +59,25 @@ public class GoFish {
     private static String requestCards() {
         while(true) {
             System.out.println("\nWhat card would you like to request?");
-            for(int i = 1; i < playerHand.length(); i++)
-            return null;
+            
+            String temp = "";
+            for(int i = 0; i < playerHand.length() - 1; i += 2) {
+                if(i != 0)
+                    temp += ", ";
+                temp += playerHand.charAt(i) + " (" + (i/2 + 1) + ")";
+            }
+            System.out.println(temp);
+
+            try {
+                int card = Integer.parseInt(in.nextLine());
+                if(card < 1 || card > (playerHand.length() / 2) )
+                    System.out.println("Please enter a valid option.\n");
+                else {
+                    return playerHand.charAt((card - 1) * 2) + "";
+                }
+            } catch(NumberFormatException e) {
+                System.out.println("Please enter a valid option.\n");
+            }
         }
     }
 
