@@ -92,9 +92,9 @@ public class GoFish {
     private static void checkHand(int playerTargeted, int requester) {
         String card = "";
         if(requester == PLAYER) 
-            card = requestCards();
+            card = playerRequestCards();
         else
-            card = requestCards(requester);
+            card = cpuRequestCards(requester);
 
         String hand = card + "D";
         if(playerTargeted == PLAYER) hand += playerHand;
@@ -163,7 +163,7 @@ public class GoFish {
         }
     }
 
-    private static String requestCards() { // only used for the player
+    private static String playerRequestCards() { // only used for the player
         while(true) {
             System.out.println("\nWhat card would you like to request?");
             
@@ -187,7 +187,7 @@ public class GoFish {
         }
     }
 
-    private static String requestCards(int p) {
+    private static String cpuRequestCards(int p) {
         String hand = "";
         if(p == COM1)
             hand = comHand1;
