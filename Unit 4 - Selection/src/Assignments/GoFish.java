@@ -34,6 +34,11 @@ public class GoFish {
         checkPairs(comHand3, COM3);
 
         while(!gameEnded) {
+            displayHand(PLAYER);
+            displayHand(COM1);
+            displayHand(COM2);
+            displayHand(COM3);
+
             playerTurn();
             cpuTurn(COM1);
             cpuTurn(COM2);
@@ -42,39 +47,42 @@ public class GoFish {
     }
 
     private static void cpuTurn(int p) {
-        System.out.println("Player " + p + "'s turn\n");
+        int playerTargeted = 0;
+        while(true) {
+            playerTargeted = (int) (Math.random()*4) + 1;
+            if(playerTargeted == p) 
+                continue;
+            break;
+        }
+        checkHand(playerTargeted, p);
+        checkScore(p);
     }
 
-    private static void playerTurn() {
-        displayHand(PLAYER);
-        displayHand(COM1);
-        displayHand(COM2);
-        displayHand(COM3);
-        
-        while(true) {
-            System.out.println("\nWhat would you like to do?");
+    private static void checkScore(int p) {
+    }
 
-            int action = chooseAction();
-            int p = choosePlayer(action);
+    private static void playerTurn() {      
+        System.out.println("\nWhat would you like to do?");
 
-            if(action == REQUEST_CARDS) {
-                checkHand(p, PLAYER);
+        int action = chooseAction();
+        int p = choosePlayer(action);
 
-                if(playerScore == 10)
-                    endGame(PLAYER);
-                if(playerHand.length() == 0) {
-                    System.out.println("Drawing 5 new cards...");
-                    playerHand = newHand();
-                    checkPairs(playerHand, PLAYER);
-                }
-                
-                break;
-            } else if(action == CHECK_HAND)
-                displayHand(p);
-            else if(action == CHECK_SCORE) 
-                displayScore(p);
-            
-            System.out.println();
+        if(action == REQUEST_CARDS) {
+            checkHand(p, PLAYER);
+
+            if(playerScore == 10)
+                endGame(PLAYER);
+            if(playerHand.length() == 0) {
+                System.out.println("Hit 0 cards, drawing 5 new cards.");
+                playerHand = newHand();
+                checkPairs(playerHand, PLAYER);
+            }
+        } else if(action == CHECK_HAND) {
+            displayHand(p);
+            playerTurn();
+        } else if(action == CHECK_SCORE) {
+            displayScore(p);
+            playerTurn();
         }
     }
 
@@ -82,7 +90,11 @@ public class GoFish {
     }
 
     private static void checkHand(int playerTargeted, int requester) {
-        String card = requestCards();
+        String card = "";
+        if(requester == PLAYER) 
+            card = requestCards();
+        else
+            card = requestCards(requester);
 
         String hand = card + "D";
         if(playerTargeted == PLAYER) hand += playerHand;
@@ -104,10 +116,26 @@ public class GoFish {
         if(!hasRequested)
             hand = hand.substring(2); // removes the card added at the beginning of the string to check if player had card
 
-        if(playerTargeted == PLAYER) playerHand = hand;
-        if(playerTargeted == COM1) comHand1 = hand;
-        if(playerTargeted == COM2) comHand2 = hand;
-        if(playerTargeted == COM3) comHand3 = hand;
+        String requestName = "", targetName = "";
+        if(requester == PLAYER) requestName = "Player";
+        if(requester == COM1) requestName = "Owen";
+        if(requester == COM2) requestName = "Cameron";
+        if(requester == COM3) requestName = "Michael";
+
+        if(playerTargeted == PLAYER) {
+            playerHand = hand;
+            targetName = "Player";
+        } if(playerTargeted == COM1) {
+            comHand1 = hand;
+            targetName = "Owen";
+        } if(playerTargeted == COM2) {
+            comHand2 = hand;
+            targetName = "Cameron";
+        } if(playerTargeted == COM3) {
+            comHand3 = hand;
+            targetName = "Michael";
+        }
+        System.out.print(requestName + " asking " + targetName + " for " + card + "'s. ");
 
         if(hasRequested) {
             System.out.println("Match Found!");
@@ -159,8 +187,20 @@ public class GoFish {
         }
     }
 
-    private static String requestCards(int p, String hand) {
-        return null;
+    private static String requestCards(int p) {
+        String hand = "";
+        if(p == COM1)
+            hand = comHand1;
+        if(p == COM2)
+            hand = comHand2;
+        if(p == COM3)
+            hand = comHand3;
+
+        int random = (int) (Math.random() * hand.length());
+        if(random % 2 != 0) // if random is not even
+            random--;
+
+        return hand.charAt(random) + "";
     }
 
     private static int choosePlayer(int action) {
