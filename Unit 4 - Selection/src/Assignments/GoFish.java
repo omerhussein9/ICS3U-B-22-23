@@ -47,10 +47,12 @@ public class GoFish {
             int playerTargeted = 0;
             while(true) {
                 playerTargeted = (int) (Math.random()*4) + 1;
-                if(playerTargeted != p) 
+                if(playerTargeted != p)
                     break;
-            } // chooses a random player for the com to target other than itself
+            } 
+            // chooses a random player for the com to target other than itself
             checkHand(playerTargeted, p);
+            outOfCards();
         }
     }
 
@@ -73,18 +75,32 @@ public class GoFish {
         if(action == REQUEST_CARDS) {
             int p = choosePlayer();
             checkHand(p, PLAYER);
-
-            if(playerHand.length() == 0) { // note for self: make this a function and call it for all players
-                System.out.println("Hit 0 cards, drawing 5 new cards.");
-                playerHand = newHand();
-                checkPairs(playerHand, PLAYER);
-            }
+            outOfCards();
         } else if(action == CHECK_HAND) {
             displayAllPlayer(CHECK_HAND);
-            playerTurn();
+            playerTurn(); // asks for the action again
         } else if(action == CHECK_SCORE) {
             displayAllPlayer(CHECK_SCORE);
-            playerTurn();
+            playerTurn(); // asks for the action again
+        }
+    }
+
+    private static void outOfCards() {
+        if(playerHand.length() == 0 || comHand1.length() == 0 || comHand2.length() == 0 || comHand3.length() == 0) {
+            System.out.println("Hit 0 cards, drawing 5 new cards.");
+            if(playerHand.length() == 0) {
+                playerHand = newHand();
+                checkPairs(playerHand, PLAYER);
+            } if(comHand1.length() == 0) {
+                comHand1 = newHand();
+                checkPairs(comHand1, COM1);
+            } if(comHand2.length() == 0) {
+                comHand2 = newHand();
+                checkPairs(comHand2, COM2);
+            } if(comHand3.length() == 0) {
+                comHand3 = newHand();
+                checkPairs(comHand3, COM3);
+            }
         }
     }
 
@@ -105,13 +121,13 @@ public class GoFish {
         
         System.out.println(label + " has reached 10 points! " + label + " wins the game!\n");
 
-        gameEnded = true;
         if(playAgain()) {
             playerHand = newHand(); comHand1 = newHand(); comHand2 = newHand(); comHand3 = newHand();
             playerScore = 0; comScore1 = 0; comScore2 = 0; comScore3 = 0;
 
-            main(null);
+            main(null); // calls the main function, restarting the game.
         }
+        gameEnded = true; // when you dont play again it sets this to true and stops the com's from playing, ending the loop
     }
 
     private static boolean playAgain() {
@@ -122,40 +138,37 @@ public class GoFish {
                 return true;
             else if(line.equals("N") || line.equals("n") || line.equals("no") || line.equals("NO"))
                 return false;
-            else {
+            else
                 System.out.println("Invalid Response");
-            }
         }
     }
 
     private static void checkHand(int playerTargeted, int requester) {
         String card = "";
-        if(requester == PLAYER) 
-            card = playerRequestCards();
-        else
-            card = comRequestCards(requester);
+        if(requester == PLAYER)  card = playerRequestCards();
+        else card = comRequestCards(requester);
 
         String hand = card + "D"; // adds a random suit afterwards - card only has the value and not the suit
-        if(playerTargeted == PLAYER) hand += playerHand;
+        if(playerTargeted == PLAYER) hand += playerHand; // adds the hand after the card added
         if(playerTargeted == COM1) hand += comHand1;
         if(playerTargeted == COM2) hand += comHand2;
         if(playerTargeted == COM3) hand += comHand3;
 
         boolean hasRequested = false;
-        for (int i = 0; i < hand.length() - 1; i+=2) {
+        for (int i = 0; i < hand.length() - 1; i+=2) { // almost the same as check pairs
             String c = hand.charAt(i) + "";
             String temp = hand.substring(hand.indexOf(c) + 2);
             if(temp.contains(c)) {
                 hasRequested = true;
                 hand = hand.substring(0, i) + temp.substring(0, temp.indexOf(c)) + temp.substring(temp.indexOf(c) + 2);
-                break;
+                break; // breaks after finding pair since there should only be one.
             }
         }
 
         if(!hasRequested)
             hand = hand.substring(2); // removes the card added at the beginning of the string to check if player had card
 
-        String requestName = "", targetName = "";
+        String requestName = "", targetName = ""; // to make it look nice
         if(requester == PLAYER) requestName = "Player";
         if(requester == COM1) requestName = "Owen";
         if(requester == COM2) requestName = "Cameron";
@@ -176,7 +189,7 @@ public class GoFish {
         }
         System.out.print(requestName + " asking " + targetName + " for " + card + "'s. ");
 
-        if(hasRequested) {
+        if(hasRequested) { // adds the card to hand and checks for pairs (there is always a pair)
             System.out.println("Match Found!");
 
             if(requester == PLAYER) checkPairs(playerHand + card + "D", PLAYER);
@@ -189,7 +202,7 @@ public class GoFish {
             System.out.println("Go Fish! Drawing a card from the pile.");
 
             if(requester == PLAYER) {
-                playerHand += getCard();
+                playerHand += getCard(); // adds a random new card to the hand
                 checkPairs(playerHand, PLAYER);
             } if(requester == COM1) {
                 comHand1 += getCard();
@@ -209,7 +222,7 @@ public class GoFish {
         for(int i = 0; i < playerHand.length() - 1; i += 2) {
             if(i != 0)
                 temp += ", ";
-            temp += playerHand.charAt(i) + " (" + (i/2 + 1) + ")";
+            temp += playerHand.charAt(i) + " (" + (i/2 + 1) + ")"; // adds the numbers next to the card for choosing
         }
 
         while(true) {
@@ -217,10 +230,10 @@ public class GoFish {
 
             try {
                 int card = Integer.parseInt(in.nextLine());
-                if(card < 1 || card > (playerHand.length() / 2))
+                if(card < 1 || card > (playerHand.length() / 2)) // each card is 2 in length so /2 gives # of cards
                     System.out.println("Please enter a valid option.\n");
                 else
-                    return playerHand.charAt((card - 1) * 2) + "";
+                    return playerHand.charAt((card - 1) * 2) + ""; // -1 on the card b/c index starts at 0, *2 for string index
             } catch(NumberFormatException e) {
                 System.out.println("Please enter a valid option.\n");   
             }
@@ -237,8 +250,8 @@ public class GoFish {
             hand = comHand3;
 
         int random = (int) (Math.random() * hand.length());
-        if(random % 2 != 0) // if random is not even
-            random--;
+        if(random % 2 != 0)
+            random--; // if random is not even, makes it even (card values always have an even index)
 
         return hand.charAt(random) + "";
     }
@@ -247,14 +260,14 @@ public class GoFish {
         String temp = "Which player would you like to ask for cards?";
 
         while(true) {
-            System.out.print("\n" + temp + "\nOwen (2), Cameron (3), Michael (4): ");
+            System.out.print("\n" + temp + "\nOwen (1), Cameron (2), Michael (3): ");
             try {
                 int p = Integer.parseInt(in.nextLine());
 
-                if(p > 4 || p < 2)
+                if(p > 3 || p < 1)
                     System.out.println("Please enter a valid option.\n");
                 else
-                    return p;
+                    return p + 1; // +1 b/c com values are 1 higher than the options shown
             } catch(NumberFormatException e) {
                 System.out.println("Please enter a valid option.\n");
             }
@@ -282,7 +295,7 @@ public class GoFish {
         String found = "No pairs found.";
         for (int i = 0; i < hand.length() - 1; i+=2) {
             String c = hand.charAt(i) + "";
-            String temp = hand.substring(hand.indexOf(c) + 2);
+            String temp = hand.substring(hand.indexOf(c) + 2); // string without current card and everything before it
             if(temp.contains(c)) {
                 count++;
                 found = count + " pair(s) found!"; // to make the interface look nice
@@ -314,23 +327,25 @@ public class GoFish {
     }
 
     public static void displayHand(int p) {              
-        if(p == PLAYER) {
-            System.out.println("Player Hand: " + addSpaces(playerHand));
-        } else if(p == COM1) {
-            System.out.println("Owen Hand: " + addSpaces(comHand1));
-        } else if(p == COM2) {
-            System.out.println("Cameron Hand: " + addSpaces(comHand2));
-        } else if(p == COM3) {
-            System.out.println("Michael Hand: " + addSpaces(comHand3));
-        }
+        if(p == PLAYER)
+            System.out.println("Player Hand: " + addSpaces(playerHand, false));
+        if(p == COM1)
+            System.out.println("Owen Hand: " + addSpaces(comHand1, true));
+        if(p == COM2)
+            System.out.println("Cameron Hand: " + addSpaces(comHand2, true));
+        if(p == COM3)
+            System.out.println("Michael Hand: " + addSpaces(comHand3, true));
     }
 
-    private static String addSpaces(String hand) {
+    private static String addSpaces(String hand, boolean isHidden) { // adds spaces after every card to make it look nice
         String temp = "";
         for(int i = 0; i < hand.length(); i++) {
             if(i % 2 == 0 && i != 0)
                 temp += " ";
-            temp += hand.charAt(i) + "";
+            if(isHidden)
+                temp += "X";
+            else 
+                temp += hand.charAt(i) + "";
         }
         return temp;
     }
@@ -346,17 +361,11 @@ public class GoFish {
             System.out.println("Michael Score: " + comScore3);
     }
 
-    private static void displayAllPlayer(int action) {
+    private static void displayAllPlayer(int action) { // better in some scenarios
         if(action == CHECK_HAND) {
-            displayHand(PLAYER);
-            displayHand(COM1);
-            displayHand(COM2); 
-            displayHand(COM3);
+            displayHand(PLAYER); displayHand(COM1); displayHand(COM2); displayHand(COM3);
         } else if (action == CHECK_SCORE) {
-            displayScore(PLAYER);
-            displayScore(COM1);
-            displayScore(COM2);
-            displayScore(COM3);
+            displayScore(PLAYER); displayScore(COM1); displayScore(COM2); displayScore(COM3);
         }
     }
 
