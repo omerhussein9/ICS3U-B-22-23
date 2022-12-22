@@ -148,7 +148,7 @@ public class GoFish {
         if(requester == PLAYER)  card = playerRequestCards();
         else card = comRequestCards(requester);
 
-        String hand = card + "D"; // adds a random suit afterwards - card only has the value and not the suit
+        String hand = card + getValue(); // adds a random suit afterwards - card only has the value and not the suit
         if(playerTargeted == PLAYER) hand += playerHand; // adds the hand after the card added
         if(playerTargeted == COM1) hand += comHand1;
         if(playerTargeted == COM2) hand += comHand2;
@@ -257,10 +257,8 @@ public class GoFish {
     }
 
     private static int choosePlayer() {
-        String temp = "Which player would you like to ask for cards?";
-
         while(true) {
-            System.out.print("\n" + temp + "\nOwen (1), Cameron (2), Michael (3): ");
+            System.out.print("\nWhich player would you like to ask for cards?\nOwen (1), Cameron (2), Michael (3): ");
             try {
                 int p = Integer.parseInt(in.nextLine());
 
