@@ -2,8 +2,6 @@ package Assignments;
 
 import java.util.Scanner;
 
-import javax.lang.model.util.ElementScanner14;
-
 public class Blackjack {
     
     static Scanner in = new Scanner(System.in);
